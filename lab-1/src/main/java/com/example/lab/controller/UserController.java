@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
-    @Autowired
     private UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping("/{username}")
     public User getUser(@PathVariable String username) {
