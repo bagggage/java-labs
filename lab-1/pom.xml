@@ -15,6 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
+		<sonar.organization>bagggage</sonar.organization>
+  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -29,10 +31,6 @@
     		<groupId>org.postgresql</groupId>
     		<artifactId>postgresql</artifactId>
 		</dependency>
-			<properties>
-  			<sonar.organization>bagggage</sonar.organization>
-  			<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		</properties>
 	</dependencies>
 
 	<build>
