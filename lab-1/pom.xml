@@ -29,6 +29,10 @@
     		<groupId>org.postgresql</groupId>
     		<artifactId>postgresql</artifactId>
 		</dependency>
+			<properties>
+  			<sonar.organization>bagggage</sonar.organization>
+  			<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		</properties>
 	</dependencies>
 
 	<build>
