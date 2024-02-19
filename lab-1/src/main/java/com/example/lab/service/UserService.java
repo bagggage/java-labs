@@ -3,8 +3,8 @@ package com.example.lab.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.lab.dao.UserRepository;
 import com.example.lab.model.User;
+import com.example.lab.repository.UserRepository;
 
 @Service
 public class UserService {
