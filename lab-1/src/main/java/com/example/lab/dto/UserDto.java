@@ -19,20 +19,20 @@ public class UserDto {
     private List<GitDto> repositories;
 
     public UserDto(User entity, boolean includeRepositories) {
-        id = entity.id;
-        name = entity.name;
-        username = entity.username;
-        email = entity.email;
+        id = entity.getId();
+        name = entity.getName();
+        username = entity.getUsername();
+        email = entity.getEmail();
 
         if (includeRepositories) {
             repositories = new ArrayList<>();
 
-            for (Git git : entity.ownedRepositories) {
-                if (git.isPublic) repositories.addLast(new GitDto(git, false));
+            for (Git git : entity.getOwnedRepositories()) {
+                if (Boolean.TRUE.equals(git.getIsPublic())) repositories.addLast(new GitDto(git, false));
             }
 
-            for (Git git : entity.contributing) {
-                if (git.isPublic) repositories.addLast(new GitDto(git, true));
+            for (Git git : entity.getContributing()) {
+                if (Boolean.TRUE.equals(git.getIsPublic())) repositories.addLast(new GitDto(git, true));
             }
         }
     }

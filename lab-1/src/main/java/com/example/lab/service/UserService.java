@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        if (user.id != null || repository.findByUsername(user.username).isPresent()) {
+        if (user.getId() != null || repository.findByUsername(user.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
@@ -49,14 +49,13 @@ public class UserService {
 
         if (targetUser == null) return null;
 
-        if (userData.username != null && !userData.username.isEmpty()) {
-            if (repository.findByUsername(userData.username).isEmpty()) {
-                targetUser.username = userData.username;
-            }
+        if (userData.getUsername() != null && !userData.getUsername().isEmpty()
+                && repository.findByUsername(userData.getUsername()).isEmpty()) {
+            targetUser.setUsername(userData.getUsername());
         }
 
-        if (userData.name != null && !userData.name.isEmpty()) targetUser.name = userData.name;
-        if (userData.email != null && !userData.email.isEmpty()) targetUser.email = userData.email;
+        if (userData.getName() != null && !userData.getName().isEmpty()) targetUser.setName(userData.getName());
+        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) targetUser.setName(userData.getEmail());
 
         return repository.save(targetUser);
     }
@@ -65,31 +64,28 @@ public class UserService {
         return repository.removeByUsername(username);
     }
 
-    public Link linkUser(User user, Link.Type linkType, String username) {
+    public Link linkUser(User user, Link.Service linkService, String username) {
         // Link already exists
-        if (linkRepository.findByUserAndType(user, linkType).isPresent()) return null;
+        if (linkRepository.findByUserAndType(user, linkService).isPresent()) return null;
 
         ThirdPartyGitService thirdGitService;
         
-        switch (linkType) {
-            case GITHUB:
-                thirdGitService = githubService;
-            break;
-            default:
-                return null; // Unsupported link type
+        if (linkService == Link.Service.GITHUB) {
+            thirdGitService = githubService;
+        } else {
+            // Unsuported service
+            return null;
         }
 
         List<Git> repositories = thirdGitService.getRepositoriesByUsername(user, username);
-        
-        if (repositories == null) return null;
 
-        gitService.saveRepositories(repositories);
+        if (!repositories.isEmpty()) gitService.saveRepositories(repositories);
 
         Link link = new Link();
 
-        link.type = linkType;
-        link.url = thirdGitService.getUrlByUsername(username);
-        link.user = user;
+        link.setService(linkService);
+        link.setUrl(thirdGitService.getUrlByUsername(username));
+        link.setUser(user);
 
         return linkRepository.save(link);
     }

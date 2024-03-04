@@ -8,5 +8,5 @@ import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
 
 public interface LinkRepository extends JpaRepository<Link, Long> {
-    Optional<Link> findByUserAndType(User user, Link.Type type);
+    Optional<Link> findByUserAndType(User user, Link.Service type);
 }

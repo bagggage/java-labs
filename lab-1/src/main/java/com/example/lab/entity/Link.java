@@ -9,26 +9,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "links")
 public class Link {
-    public enum Type {
+    public enum Service {
         GITHUB,
         GITLAB,
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
     @Column(name = "type")
-    public Type type;
+    private Service service;
 
     @Column(name = "url")
-    public String url;
+    private String url;
 
     @JsonIgnore
     @ManyToOne
-    public User user;
+    private User user;
 }

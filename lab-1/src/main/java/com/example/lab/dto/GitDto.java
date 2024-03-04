@@ -21,17 +21,20 @@ public class GitDto {
     private Git.Language language;
 
     public GitDto(Git entity, Boolean includeOwner) {
-        id = entity.id;
-        name = entity.name;
-        owner = new UserDto(entity.owner, false);
-        contributorIds = new ArrayList<>();
+        id = entity.getId();
+        name = entity.getName();
 
-        for (User contributor : entity.contributors) {
-            contributorIds.addLast(contributor.id);
+        if (includeOwner) owner = new UserDto(entity.getOwner(), false);
+
+        contributorIds = new ArrayList<>();
+        contributorIds.addLast(entity.getId());
+
+        for (User contributor : entity.getContributors()) {
+            contributorIds.addLast(contributor.getId());
         }
 
-        language = entity.language;
+        language = entity.getLanguage();
 
-        gitUrl = entity.gitUrl;
+        gitUrl = entity.getGitUrl();
     }
 }

@@ -2,9 +2,12 @@ package com.example.lab.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class GithubRepositoryDto {
-    public String name;
+    private String name;
     
     @JsonProperty("git_url")
-    public String gitUrl;
+    private String gitUrl;
 }

@@ -1,6 +1,7 @@
 package com.example.lab.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,16 +34,16 @@ public class GithubService implements ThirdPartyGitService {
                                 .bodyToMono(new ParameterizedTypeReference<List<GithubRepositoryDto>>(){})
                                 .block();
 
-        if (repositories == null) return null;
+        if (repositories == null) return Collections.emptyList();
 
         ArrayList<Git> result = new ArrayList<>(repositories.size());
 
         for (GithubRepositoryDto githubRepository : repositories) {
             Git git = new Git();
 
-            git.owner = user;
-            git.name = githubRepository.name;
-            git.gitUrl = githubRepository.gitUrl;
+            git.setOwner(user);
+            git.setName(githubRepository.getName());
+            git.setGitUrl(githubRepository.getGitUrl());
 
             result.add(git);
         }

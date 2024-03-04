@@ -12,30 +12,32 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "username", unique = true)
-    public String username;
+    private String username;
 
     @Column(name = "email")
-    public String email;
+    private String email;
 
     @OneToMany(mappedBy = "owner")
-    public List<Git> ownedRepositories;
+    private List<Git> ownedRepositories;
 
     @JsonIgnore
     @ManyToMany
-    public List<Git> contributing;
+    private List<Git> contributing;
 
     @OneToMany(mappedBy = "user")
-    public List<Link> links;
+    private List<Link> links;
 }

@@ -13,7 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "repos")
 public class Git {
@@ -40,24 +42,24 @@ public class Git {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
     @Column(name = "name", unique = true)
-    public String name;
+    private String name;
 
     @Column(name = "public")
-    public Boolean isPublic = true;
+    private Boolean isPublic = true;
 
     @Column(name = "lang")
-    public Language language;
+    private Language language;
 
     @Column(name = "git", unique = true)
-    public String gitUrl;
+    private String gitUrl;
 
     @JsonIgnore
     @ManyToOne
-    public User owner;
+    private User owner;
 
     @ManyToMany(mappedBy = "contributing", fetch = FetchType.LAZY)
-    public List<User> contributors;
+    private List<User> contributors;
 }

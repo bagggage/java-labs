@@ -56,7 +56,7 @@ public class UserController {
     @PostMapping("/{username}/link")
     public Link linkWithThirdPartyService(
         @PathVariable String username, 
-        @RequestParam(name = "service") Link.Type type,
+        @RequestParam(name = "service") Link.Service type,
         @RequestParam(name = "username") String thirdPartyUsername) {
         User targetUser = service.findUserByUsername(username).orElse(null);
 
