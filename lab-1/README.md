@@ -1,8 +1,24 @@
-# Spring Boot Minimal REST API
+# Spring Boot REST API
 
-Just sample to boot it and test pretty simple get/post responcies.
+Git links service REST API.
 
 Includes:
 - Spring JPA
 - Spring Boot Web
 - PostgreSQL Driver
+
+## Api
+    "host/api/..."
+
+### Users
+- /users
+
+#### GET
+- /{username} - get user by username
+- ?id=... - get user by id
+
+#### DELETE
+- {username}/remove
+
+### Repos
+- /repos
