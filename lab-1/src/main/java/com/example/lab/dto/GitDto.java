@@ -20,7 +20,7 @@ public class GitDto {
     private String gitUrl;
     private Git.Language language;
 
-    public GitDto(Git entity, Boolean includeOwner) {
+    public GitDto(Git entity, boolean includeOwner) {
         id = entity.getId();
         name = entity.getName();
 
