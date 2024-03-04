@@ -1,15 +1,16 @@
 package com.example.lab.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.example.lab.dto.UserDto;
 import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
 import com.example.lab.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,40 +29,60 @@ public class UserController {
     }
 
     @GetMapping
-    public User getUserById(@RequestParam(name = "id") Long id) {
-        return service.findUserById(id).orElse(null);
+    public UserDto getUserById(@RequestParam(name = "id") Long id) {
+        return new UserDto(
+            service.
+            findUserById(id).
+            orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+            true
+        );
     }
 
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable(name = "username") String username) {
-        return service.findUserByUsername(username).orElse(null);
+    public UserDto getUserByUsername(@PathVariable(name = "username") String username) {
+        return new UserDto(
+            service
+            .findUserByUsername(username)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+            true
+        );
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})
-    public User addUser(@RequestBody User user) {
-        return service.addUser(user);
+    public UserDto addUser(@RequestBody User user) {
+        return new UserDto(service.addUser(user), false);
     }
 
     @PostMapping("/{username}/link")
-    public Link putMethodName(
+    public Link linkWithThirdPartyService(
         @PathVariable String username, 
-        @RequestParam(name = "type") Link.Type type,
-        @RequestParam(name = "url") String url) {
+        @RequestParam(name = "service") Link.Type type,
+        @RequestParam(name = "username") String thirdPartyUsername) {
         User targetUser = service.findUserByUsername(username).orElse(null);
 
-        // User not found
-        if (targetUser == null) return null;
+        if (targetUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return service.linkUser(targetUser, type, url);
+        return service.linkUser(targetUser, type, thirdPartyUsername);
     }
 
     @PatchMapping("/{username}")
-    public User updateUser(@PathVariable(name = "username") String username, @RequestBody User user) {
-        return service.updateUser(username, user);
+    public UserDto updateUser(@PathVariable(name = "username") String username, @RequestBody User user) {
+        User updatedUser = service.updateUser(username, user);
+
+        if (updatedUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return new UserDto(updatedUser, false);
     }
 
     @DeleteMapping("/{username}")
-    public List<User> deleteUser(@PathVariable(name = "username") String username) {
-        return service.removeUserByUsername(username);
+    public UserDto deleteUser(@PathVariable(name = "username") String username) {
+        return new UserDto(
+            service
+            .removeUserByUsername(username)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+            false
+        );
     }
 }

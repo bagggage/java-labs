@@ -13,33 +13,36 @@ import com.example.lab.entity.User;
 
 @Service
 public class GithubService implements ThirdPartyGitService {
-    private static final String githubUrl = "https://github.com";
-    private static final String githubApiUrl = "https://api.github.com";
-    private static final String usersApi = "/users";
-    private static final String reposApi = "/repos";
+    private static final String GITHUB_URL = "https://github.com";
+    private static final String GITHUP_API_URL = "https://api.github.com";
+    private static final String USERS_API = "/users";
+    private static final String REPOS_API = "/repos";
 
     private final WebClient webClient;
 
     public GithubService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(githubApiUrl).build();
+        this.webClient = webClientBuilder.baseUrl(GITHUP_API_URL).build();
     }
 
+    @Override
     public List<Git> getRepositoriesByUsername(User user, String username) {
         List<GithubRepositoryDto> repositories = webClient
                                 .get()
-                                .uri(usersApi + '/' + username + reposApi)
+                                .uri(USERS_API + '/' + username + REPOS_API)
                                 .retrieve()
                                 .bodyToMono(new ParameterizedTypeReference<List<GithubRepositoryDto>>(){})
                                 .block();
 
-        ArrayList<Git> result = new ArrayList<Git>(repositories.size());
+        if (repositories == null) return null;
+
+        ArrayList<Git> result = new ArrayList<>(repositories.size());
 
         for (GithubRepositoryDto githubRepository : repositories) {
             Git git = new Git();
 
             git.owner = user;
             git.name = githubRepository.name;
-            git.gitUrl = githubRepository.git_url;
+            git.gitUrl = githubRepository.gitUrl;
 
             result.add(git);
         }
@@ -47,7 +50,8 @@ public class GithubService implements ThirdPartyGitService {
         return result;
     }
 
+    @Override
     public String getUrlByUsername(String username) {
-        return githubUrl + '/' + username;
+        return GITHUB_URL + '/' + username;
     }
 }

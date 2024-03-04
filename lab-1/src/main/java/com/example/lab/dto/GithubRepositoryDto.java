@@ -1,7 +1,10 @@
 package com.example.lab.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class GithubRepositoryDto {
     public String name;
     
-    public String git_url;
+    @JsonProperty("git_url")
+    public String gitUrl;
 }

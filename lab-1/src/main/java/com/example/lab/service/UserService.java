@@ -3,7 +3,9 @@ package com.example.lab.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.lab.entity.Git;
 import com.example.lab.entity.Link;
@@ -35,6 +37,10 @@ public class UserService {
     }
 
     public User addUser(User user) {
+        if (user.id != null || repository.findByUsername(user.username).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
         return repository.save(user);
     }
 
@@ -43,19 +49,19 @@ public class UserService {
 
         if (targetUser == null) return null;
 
-        if (userData.username != null && userData.username.isEmpty() == false) {
+        if (userData.username != null && !userData.username.isEmpty()) {
             if (repository.findByUsername(userData.username).isEmpty()) {
                 targetUser.username = userData.username;
             }
         }
 
-        if (userData.name != null && userData.name.isEmpty() == false) targetUser.name = userData.name;
-        if (userData.email != null && userData.email.isEmpty() == false) targetUser.email = userData.email;
+        if (userData.name != null && !userData.name.isEmpty()) targetUser.name = userData.name;
+        if (userData.email != null && !userData.email.isEmpty()) targetUser.email = userData.email;
 
         return repository.save(targetUser);
     }
 
-    public List<User> removeUserByUsername(String username) {
+    public Optional<User> removeUserByUsername(String username) {
         return repository.removeByUsername(username);
     }
 
@@ -74,6 +80,9 @@ public class UserService {
         }
 
         List<Git> repositories = thirdGitService.getRepositoriesByUsername(user, username);
+        
+        if (repositories == null) return null;
+
         gitService.saveRepositories(repositories);
 
         Link link = new Link();

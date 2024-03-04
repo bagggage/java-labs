@@ -38,7 +38,7 @@ public class GitService {
 
         if (contributor == null || gitRepository == null) return null;
 
-        contributor.contributing.addLast(gitRepository);;
+        contributor.contributing.addLast(gitRepository);
         userRepository.save(contributor);
 
         return contributor;
