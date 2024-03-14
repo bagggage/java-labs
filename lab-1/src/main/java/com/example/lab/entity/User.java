@@ -86,10 +86,10 @@ public class User {
             || this.links.size() != other.links.size()) return false;
 
         if (this.ownedRepositories != other.ownedRepositories
-            || this.ownedRepositories.size() != this.ownedRepositories.size()) return false;
+            || this.ownedRepositories.size() != other.ownedRepositories.size()) return false;
 
         if (this.contributing != other.contributing
-            || this.contributing.size() != this.contributing.size()) return false;
+            || this.contributing.size() != other.contributing.size()) return false;
 
         for (int i = 0; i < this.links.size(); ++i) {
             if (this.links.get(i).getId() != other.links.get(i).getId()) return false;
