@@ -27,7 +27,6 @@ public class GitDto {
         if (includeOwner) owner = new UserDto(entity.getOwner(), false);
 
         contributorIds = new ArrayList<>();
-        contributorIds.addLast(entity.getId());
 
         for (User contributor : entity.getContributors()) {
             contributorIds.addLast(contributor.getId());

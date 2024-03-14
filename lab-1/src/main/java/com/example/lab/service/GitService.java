@@ -32,13 +32,22 @@ public class GitService {
         repository.saveAll(repositories);
     }
 
+    public void saveRepository(Git git) {
+        repository.save(git);
+    }
+
     public User addContributorByRepositoryName(String repositoryName, String contributorUsername) {
         User contributor = userRepository.findByUsername(contributorUsername).orElse(null);
         Git gitRepository = repository.findByName(repositoryName).orElse(null);
 
         if (contributor == null || gitRepository == null) return null;
+        if (contributor.getId() == gitRepository.getOwner().getId()) return null;
+        
+        for (Git repos : contributor.getContributing()) {
+            if (repos.getId() == gitRepository.getId()) return null;
+        }
 
-        contributor.getContributing().addLast(gitRepository);
+        contributor.getContributing().add(gitRepository);
         userRepository.save(contributor);
 
         return contributor;

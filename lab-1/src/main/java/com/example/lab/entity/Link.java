@@ -24,7 +24,7 @@ public class Link {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "type")
+    @Column(name = "service")
     private Service service;
 
     @Column(name = "url")

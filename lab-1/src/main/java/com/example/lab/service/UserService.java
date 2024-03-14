@@ -55,18 +55,33 @@ public class UserService {
         }
 
         if (userData.getName() != null && !userData.getName().isEmpty()) targetUser.setName(userData.getName());
-        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) targetUser.setName(userData.getEmail());
+        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) targetUser.setEmail(userData.getEmail());
 
         return repository.save(targetUser);
     }
 
     public Optional<User> removeUserByUsername(String username) {
-        return repository.removeByUsername(username);
+        User targetUser = repository.findByUsername(username).orElse(null);
+
+        if (targetUser == null) return Optional.empty();
+        
+        for (Git repo : targetUser.getOwnedRepositories()) {
+            for (User user : repo.getContributors()) {
+                user.getContributing().remove(repo);
+                repository.save(user);
+            }
+        }
+
+        repository.delete(targetUser);
+
+        if (repository.existsById(targetUser.getId())) return Optional.empty();
+
+        return Optional.of(targetUser);
     }
 
     public Link linkUser(User user, Link.Service linkService, String username) {
         // Link already exists
-        if (linkRepository.findByUserAndType(user, linkService).isPresent()) return null;
+        if (linkRepository.findByUserAndService(user, linkService).isPresent()) return null;
 
         ThirdPartyGitService thirdGitService;
         

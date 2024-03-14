@@ -54,10 +54,9 @@ public class UserController {
     }
 
     @PostMapping("/{username}/link")
-    public Link linkWithThirdPartyService(
-        @PathVariable String username, 
-        @RequestParam(name = "service") Link.Service type,
-        @RequestParam(name = "username") String thirdPartyUsername) {
+    public Link linkWithThirdPartyService(@PathVariable String username, 
+                                        @RequestParam(name = "service") Link.Service type,
+                                        @RequestParam(name = "username") String thirdPartyUsername) {
         User targetUser = service.findUserByUsername(username).orElse(null);
 
         if (targetUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
