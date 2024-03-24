@@ -1,7 +1,6 @@
 package com.example.lab.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 @Data

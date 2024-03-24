@@ -1,17 +1,15 @@
 package com.example.lab.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
 import com.example.lab.cache.Cache;
 import com.example.lab.entity.Git;
 import com.example.lab.entity.User;
 import com.example.lab.repository.GitRepository;
 import com.example.lab.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GitService {
@@ -46,7 +44,9 @@ public class GitService {
 
     public void saveRepositories(List<Git> repositories) {
         for (Git git : repositories) {
-            if (gitsByUserCache.isCached(git.getOwner().getName())) gitsByUserCache.uncache(git.getOwner().getName());
+            if (gitsByUserCache.isCached(git.getOwner().getName())) {
+                gitsByUserCache.uncache(git.getOwner().getName());
+            }
         }
 
         repository.saveAll(repositories);
@@ -62,18 +62,30 @@ public class GitService {
     }
 
     public Page<Git> searchGitsByNameAndUser(String name, String username, int pageNumber) {
-        return repository.searchByNameAndUser('%' + name + '%', username, PageRequest.of(pageNumber, PAGE_SIZE));
+        return repository.searchByNameAndUser('%' + name + '%',
+                                            username,
+                                            PageRequest.of(pageNumber, PAGE_SIZE)
+        );
     }
 
-    public User addContributorByRepositoryName(String repositoryName, String username, String contributorUsername) {
+    public User addContributorByRepositoryName(String repositoryName,
+                                            String username,
+                                            String contributorUsername) {
         User contributor = userRepository.findByUsername(contributorUsername).orElse(null);
-        Git gitRepository = repository.findByNameAndOwnerUsername(repositoryName, username).orElse(null);
+        Git gitRepository = repository.findByNameAndOwnerUsername(repositoryName,
+                                                                username).orElse(null);
 
-        if (contributor == null || gitRepository == null) return null;
-        if (contributor.getId() == gitRepository.getOwner().getId()) return null;
-        
+        if (contributor == null || gitRepository == null) {
+            return null;
+        }
+        if (contributor.getId() == gitRepository.getOwner().getId()) {
+            return null;
+        }
+
         for (Git repos : contributor.getContributing()) {
-            if (repos.getId() == gitRepository.getId()) return null;
+            if (repos.getId() == gitRepository.getId()) {
+                return null;
+            }
         }
 
         contributor.getContributing().add(gitRepository);

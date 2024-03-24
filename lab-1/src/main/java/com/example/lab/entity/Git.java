@@ -1,12 +1,6 @@
 package com.example.lab.entity;
 
-import java.util.List;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,10 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Getter
 @Setter
@@ -72,10 +68,14 @@ public class Git {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Git)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Git)) {
+            return false;
+        }
 
-        Git other = (Git)o;
+        Git other = (Git) o;
 
         boolean isContributorsEquals = (this.contributors == other.contributors);
 
@@ -83,7 +83,9 @@ public class Git {
             && this.contributors.size() == other.contributors.size()) {
 
             for (int i = 0; i < this.contributors.size(); ++i) {
-                if (this.contributors.get(i).getId() != other.contributors.get(i).getId()) return false;
+                if (this.contributors.get(i).getId() != other.contributors.get(i).getId()) {
+                    return false;
+                }
             }
         }
 

@@ -1,11 +1,9 @@
 package com.example.lab.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.lab.entity.Git;
 import com.example.lab.entity.User;
-
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -24,7 +22,9 @@ public class GitDto {
         id = entity.getId();
         name = entity.getName();
 
-        if (includeOwner) owner = new UserDto(entity.getOwner(), false);
+        if (includeOwner) {
+            owner = new UserDto(entity.getOwner(), false);
+        }
 
         contributorIds = new ArrayList<>();
 

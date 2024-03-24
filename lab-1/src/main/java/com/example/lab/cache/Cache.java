@@ -2,10 +2,9 @@ package com.example.lab.cache;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.Getter;
 
-public class Cache<K,V> {
+public class Cache<K, V> {
     public interface ValueAccessor<T> {
         T access();
     }
@@ -13,7 +12,7 @@ public class Cache<K,V> {
     public class CacheEntry {
         private K key;
         
-        public CacheEntry(Cache<K,V> cache, K key) {
+        public CacheEntry(Cache<K, V> cache, K key) {
             this.key = key;
         }
 
@@ -22,7 +21,9 @@ public class Cache<K,V> {
         }
 
         public V orPut(ValueAccessor<V> valueAccessor) {
-            if (isCached(key)) return content.get(key);
+            if (isCached(key)) {
+                return content.get(key);
+            }
 
             V value = valueAccessor.access();
 
@@ -37,7 +38,7 @@ public class Cache<K,V> {
     }
 
     @Getter
-    private Map<K,V> content;
+    private Map<K, V> content;
 
     @Getter
     private int capacity;
@@ -56,7 +57,9 @@ public class Cache<K,V> {
     }
 
     public boolean put(K key, V value) {
-        if (!content.containsKey(key)) return false;
+        if (!content.containsKey(key)) {
+            return false;
+        }
 
         content.put(key, value);
 
@@ -64,7 +67,9 @@ public class Cache<K,V> {
     }
 
     public boolean uncache(K key) {
-        if (!content.containsKey(key)) return false;
+        if (!content.containsKey(key)) {
+            return false;
+        }
 
         content.remove(key);
 

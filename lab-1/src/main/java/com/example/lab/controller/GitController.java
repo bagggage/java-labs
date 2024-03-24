@@ -1,9 +1,5 @@
 package com.example.lab.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.lab.dto.GitDto;
 import com.example.lab.dto.PageDto;
 import com.example.lab.dto.UserDto;
@@ -11,14 +7,15 @@ import com.example.lab.entity.Git;
 import com.example.lab.entity.User;
 import com.example.lab.exceptions.NotFoundException;
 import com.example.lab.service.GitService;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/repos")

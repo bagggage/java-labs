@@ -1,10 +1,8 @@
 package com.example.lab.dto;
 
 import java.util.List;
-
-import org.springframework.data.domain.Pageable;
-
 import lombok.Data;
+import org.springframework.data.domain.Pageable;
 
 @Data
 public class PageDto<T> {
@@ -14,7 +12,7 @@ public class PageDto<T> {
     private long number;
     private long totalPages;
 
-    public PageDto (List<T> content, Pageable pageable, long totalPages) {
+    public PageDto(List<T> content, Pageable pageable, long totalPages) {
         this.content = content;
         this.size = pageable.getPageSize();
         this.number = pageable.getPageNumber();

@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-    private static ResponseEntity<ExceptionResponse> buildResponseEntity(String message, HttpStatus status) {
+    private static ResponseEntity<ExceptionResponse> buildResponseEntity(String message,
+                                                                        HttpStatus status) {
         return new ResponseEntity<>(new ExceptionResponse(message, status), status);
     }
 

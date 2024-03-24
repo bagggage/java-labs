@@ -1,11 +1,9 @@
 package com.example.lab.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.lab.entity.Git;
 import com.example.lab.entity.User;
-
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -28,11 +26,15 @@ public class UserDto {
             repositories = new ArrayList<>();
 
             for (Git git : entity.getOwnedRepositories()) {
-                if (Boolean.TRUE.equals(git.getIsPublic())) repositories.addLast(new GitDto(git, false));
+                if (Boolean.TRUE.equals(git.getIsPublic())) {
+                    repositories.addLast(new GitDto(git, false));
+                }
             }
 
             for (Git git : entity.getContributing()) {
-                if (Boolean.TRUE.equals(git.getIsPublic())) repositories.addLast(new GitDto(git, true));
+                if (Boolean.TRUE.equals(git.getIsPublic())) {
+                    repositories.addLast(new GitDto(git, true));
+                }
             }
         }
     }

@@ -1,16 +1,14 @@
 package com.example.lab.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import com.example.lab.dto.GithubRepositoryDto;
 import com.example.lab.entity.Git;
 import com.example.lab.entity.User;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class GithubService implements ThirdPartyGitService {
@@ -31,10 +29,14 @@ public class GithubService implements ThirdPartyGitService {
                                 .get()
                                 .uri(USERS_API + '/' + username + REPOS_API)
                                 .retrieve()
-                                .bodyToMono(new ParameterizedTypeReference<List<GithubRepositoryDto>>(){})
+                                .bodyToMono(new 
+                                    ParameterizedTypeReference<List<GithubRepositoryDto>>(){}
+                                )
                                 .block();
 
-        if (repositories == null) return Collections.emptyList();
+        if (repositories == null) {
+            return Collections.emptyList();
+        }
 
         ArrayList<Git> result = new ArrayList<>(repositories.size());
 
