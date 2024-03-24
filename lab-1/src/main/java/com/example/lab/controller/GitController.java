@@ -30,7 +30,9 @@ public class GitController {
     public List<GitDto> getGitByOwner(@PathVariable(name = "username") String username) {
         List<Git> gits = service.findGitsByOwnerUsername(username);
 
-        if (gits.isEmpty()) throw new NotFoundException();
+        if (gits.isEmpty()) {
+            throw new NotFoundException();
+        }
 
         List<GitDto> result = new ArrayList<>(gits.size());
 
@@ -44,43 +46,49 @@ public class GitController {
     @GetMapping("/{username}/{name}")
     public GitDto getGitByOwnerAndName(@PathVariable(name = "username") String username,
                                     @PathVariable(name = "name") String name) {
-        Git git = service.findGitByNameAndUsername(name, username).orElseThrow(() ->
-                                                new NotFoundException());
+        Git git = service.findGitByNameAndUsername(name, username).orElseThrow(
+            NotFoundException::new
+        );
 
         return new GitDto(git, false);
     }
 
     @GetMapping("/search")
     public PageDto<GitDto> searchGitsByNameAndUser(@RequestParam(name = "name") String name,
-                                                @RequestParam(name = "user", required = false) String username,
-                                                @RequestParam(name = "p", required = false) Integer pageNumber) {
+                                @RequestParam(name = "user", required = false) String username,
+                                @RequestParam(name = "p", required = false) Integer pageNumber) {
         Page<Git> page;
 
         if (username == null) {
             page = service.searchGitsByName(name, (pageNumber == null ? 0 : pageNumber));
-        }
-        else {
-            page = service.searchGitsByNameAndUser(name, username, (pageNumber == null ? 0 : pageNumber));
+        } else {
+            page = service.searchGitsByNameAndUser(name,
+                                                username,
+                                                (pageNumber == null ? 0 : pageNumber)
+            );
         }
 
-        if (page.isEmpty()) throw new NotFoundException();
+        if (page.isEmpty()) {
+            throw new NotFoundException();
+        }
 
-        List<GitDto> dtoList = new ArrayList<GitDto>(page.getSize());
+        List<GitDto> dtoList = new ArrayList<>(page.getSize());
 
         for (Git git : page) {
             dtoList.add(new GitDto(git, true));
         }
 
-        PageDto<GitDto> dtoPage = new PageDto<>(dtoList, page.getPageable(), page.getTotalPages());
-
-        return dtoPage;
+        return new PageDto<>(dtoList, page.getPageable(), page.getTotalPages());
     }
 
     @PatchMapping("/{username}/{name}/contribute")
     public UserDto addContributor(@PathVariable(name = "username") String username,
                                 @PathVariable(name = "name") String name,
                                 @RequestParam(name = "contributor") String contributorUsername) {
-        User contributor = service.addContributorByRepositoryName(name, username, contributorUsername);
+        User contributor = service.addContributorByRepositoryName(name,
+                                                                username,
+                                                                contributorUsername
+        );
 
         if (contributor == null) {
             throw new NotFoundException();

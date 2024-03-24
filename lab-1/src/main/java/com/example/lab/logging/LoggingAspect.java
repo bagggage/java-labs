@@ -29,23 +29,23 @@ public class LoggingAspect {
     }
 
     private String argsToString(Object[] args) {
-        String result = new String();
+        StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < args.length; ++i) {
             if (args[i] == null) {
-                result += "null";
+                builder.append("null");
             } else if (args[i] instanceof String) {
-                result += '\"' + args[i].toString() + '\"';
+                builder.append('\"' + args[i].toString() + '\"');
             } else {
-                result += args[i].toString();
+                builder.append(args[i].toString());
             }
             
             if (i < args.length - 1) {
-                result += ", ";
+                builder.append(", ");
             }
         }
 
-        return result;
+        return builder.toString();
     }
 
     @Pointcut(value = "execution(public * com.example.lab.controller.*.*(..))")
@@ -54,9 +54,11 @@ public class LoggingAspect {
     @Before(value = "controllersPublicMethods()")
     public void executedMethodsLog(JoinPoint joinPoint) { 
         Logger logger = getClassLogger(joinPoint.getTarget().getClass());
+        Object[] args = joinPoint.getArgs();
+
         logger.info("Request on {}({})",
                     joinPoint.getSignature().getName(),
-                    argsToString(joinPoint.getArgs())
+                    argsToString(args)
         );
     }
 

@@ -29,7 +29,7 @@ public class UserController {
         return new UserDto(
             service
             .findUserById(id)
-            .orElseThrow(() -> new NotFoundException()),
+            .orElseThrow(NotFoundException::new),
             true
         );
     }
@@ -39,7 +39,7 @@ public class UserController {
         return new UserDto(
             service
             .findUserByUsername(username)
-            .orElseThrow(() -> new NotFoundException()),
+            .orElseThrow(NotFoundException::new),
             true
         );
     }
@@ -53,8 +53,8 @@ public class UserController {
     public Link linkWithThirdPartyService(@PathVariable String username, 
                                 @RequestParam(name = "service") String thirdPartyService,
                                 @RequestParam(name = "username") String thirdPartyUsername) {    
-        User targetUser = service.findUserByUsername(username).orElseThrow(() ->
-            new NotFoundException()
+        User targetUser = service.findUserByUsername(username).orElseThrow(
+            NotFoundException::new
         );
 
         return service.linkUser(targetUser,

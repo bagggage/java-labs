@@ -12,7 +12,7 @@ public class Cache<K, V> {
     public class CacheEntry {
         private K key;
         
-        public CacheEntry(Cache<K, V> cache, K key) {
+        public CacheEntry(K key) {
             this.key = key;
         }
 
@@ -44,7 +44,7 @@ public class Cache<K, V> {
     private int capacity;
 
     public Cache(int maxCacheSize) {
-        content = new HashMap<>(maxCacheSize);
+        content = HashMap.newHashMap(maxCacheSize);
         capacity = maxCacheSize;
     }
 
@@ -81,6 +81,6 @@ public class Cache<K, V> {
     }
 
     public CacheEntry tryGet(K key) {
-        return new CacheEntry(this, key);
+        return new CacheEntry(key);
     }
 }

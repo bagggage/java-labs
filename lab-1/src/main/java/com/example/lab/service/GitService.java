@@ -31,11 +31,9 @@ public class GitService {
     }
 
     public List<Git> findGitsByOwnerUsername(String username) {
-        List<Git> gits = gitsByUserCache.tryGet(username).orPut(() ->
+        return gitsByUserCache.tryGet(username).orPut(() ->
             repository.findAllByOwnerUsername(username)
         );
-
-        return gits;
     }
 
     public Optional<Git> findGitByNameAndUsername(String name, String username) {
