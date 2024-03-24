@@ -27,27 +27,6 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Table(name = "repos")
 public class Git {
-    public enum Language {
-        A,
-        ASSEMBLER,
-        B,
-        BASIC,
-        C,
-        CSS,
-        CSHARP,
-        CPP,
-        OBJECT_C,
-        SWIFT,
-        KOTLIN,
-        FSHARP,
-        FORTRAN,
-        JAVA,
-        JAVA_SCRIPT,
-        PASCAL,
-        PYTHON,
-        HTML,
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -60,7 +39,7 @@ public class Git {
     private Boolean isPublic = true;
 
     @Column(name = "lang")
-    private Language language;
+    private String language;
 
     @Column(name = "git", unique = true)
     private String gitUrl;

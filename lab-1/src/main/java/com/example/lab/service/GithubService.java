@@ -44,6 +44,7 @@ public class GithubService implements ThirdPartyGitService {
             git.setOwner(user);
             git.setName(githubRepository.getName());
             git.setGitUrl(githubRepository.getGitUrl());
+            git.setLanguage(githubRepository.getLanguage());
 
             result.add(git);
         }

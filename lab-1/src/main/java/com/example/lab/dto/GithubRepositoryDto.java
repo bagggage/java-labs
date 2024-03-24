@@ -10,4 +10,6 @@ public class GithubRepositoryDto {
     
     @JsonProperty("git_url")
     private String gitUrl;
+    
+    private String language;
 }

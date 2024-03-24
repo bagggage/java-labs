@@ -18,7 +18,7 @@ public class GitDto {
     private List<Long> contributorIds;
 
     private String gitUrl;
-    private Git.Language language;
+    private String language;
 
     public GitDto(Git entity, boolean includeOwner) {
         id = entity.getId();
@@ -32,8 +32,7 @@ public class GitDto {
             contributorIds.addLast(contributor.getId());
         }
 
-        language = entity.getLanguage();
-
         gitUrl = entity.getGitUrl();
+        language = entity.getLanguage();
     }
 }
