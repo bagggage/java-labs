@@ -1,16 +1,14 @@
 package com.example.lab.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.lab.dto.UserDto;
 import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
+import com.example.lab.exceptions.NotFoundException;
 import com.example.lab.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,7 +31,7 @@ public class UserController {
         return new UserDto(
             service.
             findUserById(id).
-            orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+            orElseThrow(() -> new NotFoundException()),
             true
         );
     }
@@ -43,7 +41,7 @@ public class UserController {
         return new UserDto(
             service
             .findUserByUsername(username)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+            .orElseThrow(() -> new NotFoundException()),
             true
         );
     }
@@ -55,22 +53,16 @@ public class UserController {
 
     @PostMapping("/{username}/link")
     public Link linkWithThirdPartyService(@PathVariable String username, 
-                                        @RequestParam(name = "service") Link.Service type,
-                                        @RequestParam(name = "username") String thirdPartyUsername) {
-        User targetUser = service.findUserByUsername(username).orElse(null);
+                                        @RequestParam(name = "service") String thirdPartyService,
+                                        @RequestParam(name = "username") String thirdPartyUsername) {    
+        User targetUser = service.findUserByUsername(username).orElseThrow(() -> new NotFoundException());
 
-        if (targetUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        return service.linkUser(targetUser, type, thirdPartyUsername);
+        return service.linkUser(targetUser, Link.Service.valueOf(thirdPartyService), thirdPartyUsername);
     }
 
     @PatchMapping("/{username}")
     public UserDto updateUser(@PathVariable(name = "username") String username, @RequestBody User user) {
         User updatedUser = service.updateUser(username, user);
-
-        if (updatedUser == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
 
         return new UserDto(updatedUser, false);
     }
@@ -79,8 +71,7 @@ public class UserController {
     public UserDto deleteUser(@PathVariable(name = "username") String username) {
         return new UserDto(
             service
-            .removeUserByUsername(username)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+            .removeUserByUsername(username),
             false
         );
     }

@@ -3,13 +3,15 @@ package com.example.lab.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.lab.entity.Git;
 import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
+import com.example.lab.exceptions.InvalidParamsException;
+import com.example.lab.exceptions.NotFoundException;
+import com.example.lab.exceptions.NotImplementedException;
+import com.example.lab.exceptions.UndoneException;
 import com.example.lab.repository.LinkRepository;
 import com.example.lab.repository.UserRepository;
 
@@ -38,7 +40,7 @@ public class UserService {
 
     public User addUser(User user) {
         if (user.getId() != null || repository.findByUsername(user.getUsername()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new InvalidParamsException();
         }
 
         return repository.save(user);
@@ -47,7 +49,7 @@ public class UserService {
     public User updateUser(String username, User userData) {
         User targetUser = repository.findByUsername(username).orElse(null);
 
-        if (targetUser == null) return null;
+        if (targetUser == null) throw new NotFoundException();
 
         if (userData.getUsername() != null && !userData.getUsername().isEmpty()
                 && repository.findByUsername(userData.getUsername()).isEmpty()) {
@@ -60,10 +62,10 @@ public class UserService {
         return repository.save(targetUser);
     }
 
-    public Optional<User> removeUserByUsername(String username) {
+    public User removeUserByUsername(String username) {
         User targetUser = repository.findByUsername(username).orElse(null);
 
-        if (targetUser == null) return Optional.empty();
+        if (targetUser == null) throw new NotFoundException();
         
         for (Git repo : targetUser.getOwnedRepositories()) {
             for (User user : repo.getContributors()) {
@@ -74,22 +76,21 @@ public class UserService {
 
         repository.delete(targetUser);
 
-        if (repository.existsById(targetUser.getId())) return Optional.empty();
+        if (repository.existsById(targetUser.getId())) throw new UndoneException();
 
-        return Optional.of(targetUser);
+        return targetUser;
     }
 
     public Link linkUser(User user, Link.Service linkService, String username) {
         // Link already exists
-        if (linkRepository.findByUserAndService(user, linkService).isPresent()) return null;
+        if (linkRepository.findByUserAndService(user, linkService).isPresent()) throw new InvalidParamsException();
 
         ThirdPartyGitService thirdGitService;
-        
+
         if (linkService == Link.Service.GITHUB) {
             thirdGitService = githubService;
         } else {
-            // Unsuported service
-            return null;
+            throw new NotImplementedException();
         }
 
         List<Git> repositories = thirdGitService.getRepositoriesByUsername(user, username);
