@@ -19,6 +19,6 @@ public class GithubServiceTest {
 
     @Test
     void testGetUrlByUsername() {
-        assertEquals(githubService.getUrlByUsername("test"), "https://github.com/test");
+        assertEquals("https://github.com/test", githubService.getUrlByUsername("test"));
     }
 }

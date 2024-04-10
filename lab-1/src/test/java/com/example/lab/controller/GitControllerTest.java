@@ -32,7 +32,7 @@ public class GitControllerTest {
     private GitController gitController;
 
     @Test
-    public void testGetGitByOwner_NoGits() {
+    void testGetGitByOwner_NoGits() {
         String username = "testUser";
 
         when(gitService.findGitsByOwnerUsername(username)).thenReturn(new ArrayList<>());
@@ -41,7 +41,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testGetGitByOwner_WithGits() {
+    void testGetGitByOwner_WithGits() {
         String username = "testUser";
         List<Git> gits = new ArrayList<>();
         Git git = new Git();
@@ -56,7 +56,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testGetGitByOwnerAndName_Found() {
+    void testGetGitByOwnerAndName_Found() {
         String username = "testUser";
         String name = "testRepo";
         Git git = new Git();
@@ -69,7 +69,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testGetGitByOwnerAndName_NotFound() {
+    void testGetGitByOwnerAndName_NotFound() {
         String username = "testUser";
         String name = "testRepo";
 
@@ -79,7 +79,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testSearchGitsByNameAndUser_NoResults() {
+    void testSearchGitsByNameAndUser_NoResults() {
         String name = "testRepo";
         String username = "testUser";
         int pageNumber = 0;
@@ -91,7 +91,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testSearchGitsByNameAndUser_WithResults() {
+    void testSearchGitsByNameAndUser_WithResults() {
         String name = "testRepo";
         String username = "testUser";
         int pageNumber = 0;
@@ -114,7 +114,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testAddContributor_Found() {
+    void testAddContributor_Found() {
         String username = "testUser";
         String name = "testRepo";
         String contributorUsername = "contributor";
@@ -128,7 +128,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testAddContributor_NotFound() {
+    void testAddContributor_NotFound() {
         String username = "testUser";
         String name = "testRepo";
         String contributorUsername = "contributor";
