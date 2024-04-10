@@ -17,7 +17,7 @@ public class GitService {
     private UserRepository userRepository;
 
     private static final int CACHE_MAX_SIZE = 40;
-    private static final int PAGE_SIZE = 5;
+    public static final int PAGE_SIZE = 5;
 
     private Cache<String, List<Git>> gitsByUserCache = new Cache<>(CACHE_MAX_SIZE);
 

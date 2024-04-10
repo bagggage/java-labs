@@ -83,35 +83,41 @@ public class User {
         User other = (User) o;
 
         if (this.links != other.links
-            || this.links.size() != other.links.size()) {
+            || (this.links != null && this.links.size() != other.links.size())) {
             return false;
         }
 
         if (this.ownedRepositories != other.ownedRepositories
-            || this.ownedRepositories.size() != other.ownedRepositories.size()) {
+            || (this.links != null && this.ownedRepositories.size() != other.ownedRepositories.size())) {
             return false;
         }
 
         if (this.contributing != other.contributing
-            || this.contributing.size() != other.contributing.size()) {
+            || (this.links != null && this.contributing.size() != other.contributing.size())) {
             return false;
         }
 
-        for (int i = 0; i < this.links.size(); ++i) {
-            if (this.links.get(i).getId() != other.links.get(i).getId()) {
-                return false;
+        if (this.links != null) {
+            for (int i = 0; i < this.links.size(); ++i) {
+                if (this.links.get(i).getId() != other.links.get(i).getId()) {
+                    return false;
+                }
             }
         }
 
-        for (int i = 0; i < this.ownedRepositories.size(); ++i) {
-            if (this.ownedRepositories.get(i).getId() != other.ownedRepositories.get(i).getId()) {
-                return false;
+        if (this.ownedRepositories != null) {
+            for (int i = 0; i < this.ownedRepositories.size(); ++i) {
+                if (this.ownedRepositories.get(i).getId() != other.ownedRepositories.get(i).getId()) {
+                    return false;
+                }
             }
         }
 
-        for (int i = 0; i < this.contributing.size(); ++i) {
-            if (this.contributing.get(i).getId() != other.contributing.get(i).getId()) {
-                return false;
+        if (this.contributing != null) {
+            for (int i = 0; i < this.contributing.size(); ++i) {
+                if (this.contributing.get(i).getId() != other.contributing.get(i).getId()) {
+                    return false;
+                }
             }
         }
 

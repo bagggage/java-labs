@@ -75,7 +75,7 @@ public class UserService {
         if (targetUser == null) {
             throw new NotFoundException();
         }
-        
+
         for (Git repo : targetUser.getOwnedRepositories()) {
             for (User user : repo.getContributors()) {
                 user.getContributing().remove(repo);

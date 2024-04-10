@@ -28,8 +28,10 @@ public class GitDto {
 
         contributorIds = new ArrayList<>();
 
-        for (User contributor : entity.getContributors()) {
-            contributorIds.addLast(contributor.getId());
+        if (entity.getContributors() != null) {
+            for (User contributor : entity.getContributors()) {
+                contributorIds.addLast(contributor.getId());
+            }
         }
 
         gitUrl = entity.getGitUrl();

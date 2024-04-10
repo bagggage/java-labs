@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(value = { UndoneException.class })
     public ResponseEntity<ExceptionResponse> handleNotModified(UndoneException e) {
-        return buildResponseEntity(e.getMessage(), HttpStatus.NOT_MODIFIED);
+        return buildResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = { RuntimeException.class })
