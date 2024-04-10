@@ -94,17 +94,25 @@ public class UserServiceTest {
         user.setUsername(username);
         user.setEmail("@mail.com");
         user.setName("new name");
+        user.setContributing(new ArrayList<>());
+        user.setOwnedRepositories(new ArrayList<>());
 
         User updatedUser = new User();
         updatedUser.setUsername("newUsername");
+        updatedUser.setContributing(new ArrayList<>());
+        updatedUser.setOwnedRepositories(new ArrayList<>());
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(userRepository.save(updatedUser)).thenReturn(updatedUser);
+        when(userRepository.save(user)).thenReturn(updatedUser);
 
         User result = userService.updateUser(username, updatedUser);
 
         assertEquals(updatedUser, result);
         assertEquals(updatedUser.getUsername(), result.getUsername());
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> userService.updateUser(username, updatedUser));
     }
 
     @Test
