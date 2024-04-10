@@ -4,6 +4,7 @@ import com.example.lab.entity.Git;
 import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
 import com.example.lab.exceptions.InvalidParamsException;
+import com.example.lab.exceptions.NotFoundException;
 import com.example.lab.exceptions.UndoneException;
 import com.example.lab.repository.LinkRepository;
 import com.example.lab.repository.UserRepository;
@@ -91,6 +92,8 @@ public class UserServiceTest {
         String username = "testUser";
         User user = new User();
         user.setUsername(username);
+        user.setEmail("@mail.com");
+        user.setName("new name");
 
         User updatedUser = new User();
         updatedUser.setUsername("newUsername");
@@ -116,12 +119,26 @@ public class UserServiceTest {
 
         assertThrows(UndoneException.class, () -> userService.removeUserByUsername(username));
 
+        List<Git> ownedRepos = new ArrayList<>();
+        Git git = new Git();
+        git.setContributors(new ArrayList<>());
+        ownedRepos.add(git);
+
+        User contributor = new User();
+        contributor.setContributing(new ArrayList<>(ownedRepos));
+        git.getContributors().add(contributor);
+        user.setOwnedRepositories(ownedRepos);
+
         when(userRepository.existsById(user.getId())).thenReturn(false);
 
         User result = userService.removeUserByUsername(username);
 
         assertEquals(user, result);
         verify(userRepository, times(2)).delete(user);
+        verify(userRepository, times(1)).save(contributor);
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> userService.removeUserByUsername(username));
     }
 
     @Test

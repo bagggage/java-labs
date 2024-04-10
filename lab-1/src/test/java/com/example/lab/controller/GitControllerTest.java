@@ -114,6 +114,28 @@ public class GitControllerTest {
     }
 
     @Test
+    void testSearchGitsByNameAndUser_WithResultsNoUsername() {
+        String name = "testRepo";
+        int pageNumber = 0;
+ 
+        List<Git> gits = new ArrayList<>();
+
+        Git git = new Git();
+        git.setOwner(new User());
+        git.setName(name);
+        gits.add(git);
+
+        Page<Git> page = new PageImpl<>(gits, Pageable.ofSize(1), 1);
+
+        when(gitService.searchGitsByName(name, pageNumber)).thenReturn(page);
+
+        PageDto<GitDto> result = gitController.searchGitsByNameAndUser(name, null, pageNumber);
+
+        assertNotNull(result);
+        assertFalse(result.getContent().isEmpty());
+    }
+
+    @Test
     void testAddContributor_Found() {
         String username = "testUser";
         String name = "testRepo";
