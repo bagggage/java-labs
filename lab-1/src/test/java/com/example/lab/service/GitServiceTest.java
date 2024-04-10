@@ -35,7 +35,7 @@ public class GitServiceTest {
     private GitService gitService;
 
     @Test
-    public void testFindGitById() {
+    void testFindGitById() {
         Long gitId = 1L;
         Git git = new Git();
         git.setId(gitId);
@@ -49,7 +49,7 @@ public class GitServiceTest {
     }
 
     @Test
-    public void testFindGitsByOwnerUsername() {
+    void testFindGitsByOwnerUsername() {
         String username = "testUser";
         List<Git> gits = new ArrayList<>();
 
@@ -61,7 +61,7 @@ public class GitServiceTest {
     }
 
     @Test
-    public void testFindGitByNameAndUsername() {
+    void testFindGitByNameAndUsername() {
         String name = "testGit";
         String username = "testUser";
         Git git = new Git();
@@ -74,7 +74,7 @@ public class GitServiceTest {
     }
 
     @Test
-    public void testSaveRepositories() {
+    void testSaveRepositories() {
         List<Git> repositories = new ArrayList<>();
         Git git = new Git();
         git.setOwner(new User());
@@ -88,7 +88,7 @@ public class GitServiceTest {
     }
 
     @Test
-    public void testSaveRepository() {
+    void testSaveRepository() {
         Git git = new Git();
         git.setOwner(new User());
 
@@ -101,7 +101,7 @@ public class GitServiceTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testSearchGitsByName() {
+    void testSearchGitsByName() {
         String name = "testGit";
         Page<Git> page = mock(Page.class);
         when(gitRepository.searchByName("%" + name + "%", PageRequest.of(0, GitService.PAGE_SIZE))).thenReturn(page);
@@ -113,7 +113,7 @@ public class GitServiceTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testSearchGitsByNameAndUser() {
+    void testSearchGitsByNameAndUser() {
         String name = "testGit";
         String username = "testUser";
         Page<Git> page = mock(Page.class);
@@ -126,7 +126,7 @@ public class GitServiceTest {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
-    public void testAddContributorByRepositoryName() {
+    void testAddContributorByRepositoryName() {
         String repositoryName = "testRepo";
         String ownerUsername = "owner";
         String contributorUsername = "contributor";

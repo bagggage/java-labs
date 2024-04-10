@@ -82,6 +82,10 @@
                         </goals>
                     </execution>
                 </executions>
+				<configuration>
+					<exclude>**/dto/*</exclude>
+					<exclude>**/entity/*</exclude>
+				</configuration>
             </plugin>
 
             <plugin>
