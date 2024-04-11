@@ -41,11 +41,10 @@ public class GitService {
     }
 
     public void saveRepositories(List<Git> repositories) {
-        for (Git git : repositories) {
-            if (gitsByUserCache.isCached(git.getOwner().getName())) {
-                gitsByUserCache.uncache(git.getOwner().getName());
-            }
-        }
+        repositories.stream().filter(
+            git -> gitsByUserCache.isCached(git.getOwner().getName()))
+            .forEach(git -> {
+                gitsByUserCache.uncache(git.getOwner().getName()); });
 
         repository.saveAll(repositories);
     }
@@ -73,17 +72,16 @@ public class GitService {
         Git gitRepository = repository.findByNameAndOwnerUsername(repositoryName,
                                                                 username).orElse(null);
 
-        if (contributor == null || gitRepository == null) {
-            return null;
-        }
-        if (contributor.getId() == gitRepository.getOwner().getId()) {
+        if (contributor == null ||
+            gitRepository == null || 
+            contributor.getId() == gitRepository.getOwner().getId()) {
             return null;
         }
 
-        for (Git repos : contributor.getContributing()) {
-            if (repos.getId() == gitRepository.getId()) {
-                return null;
-            }
+        if (contributor.getContributing()
+            .stream()
+            .anyMatch(repos -> repos.getId() == gitRepository.getId())) {
+            return null;
         }
 
         contributor.getContributing().add(gitRepository);
