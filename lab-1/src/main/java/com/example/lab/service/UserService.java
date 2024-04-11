@@ -9,8 +9,12 @@ import com.example.lab.exceptions.NotImplementedException;
 import com.example.lab.exceptions.UndoneException;
 import com.example.lab.repository.LinkRepository;
 import com.example.lab.repository.UserRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +37,20 @@ public class UserService {
 
     public Optional<User> findUserById(Long id) {
         return repository.findById(id);
+    }
+
+    public List<User> findUsersByIdsBulk(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<User> result = ids.stream()
+            .map(id -> {
+                return repository.findById(id).orElse(null);
+            })
+            .collect(Collectors.toList());
+
+        return result;
     }
 
     public Optional<User> findUserByUsername(String username) {

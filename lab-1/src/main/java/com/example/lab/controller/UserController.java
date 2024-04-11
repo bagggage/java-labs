@@ -5,6 +5,10 @@ import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
 import com.example.lab.exceptions.NotFoundException;
 import com.example.lab.service.UserService;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,6 +36,19 @@ public class UserController {
             .orElseThrow(NotFoundException::new),
             true
         );
+    }
+
+    @GetMapping("/bulk/id")
+    public List<UserDto> getUsersByIds(@RequestBody List<Long> ids) {
+        return service.findUsersByIdsBulk(ids).stream()
+            .map(user -> {
+                if (user == null) {
+                    return null;
+                } else {
+                    return new UserDto(user, false);
+                }
+            })
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{username}")
