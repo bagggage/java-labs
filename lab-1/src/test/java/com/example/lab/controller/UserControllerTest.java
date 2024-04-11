@@ -51,7 +51,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetUsersByIds_EmptyList() {
+    void testGetUsersByIds_EmptyList() {
         List<Long> ids = new ArrayList<>();
 
         List<UserDto> result = userController.getUsersByIds(ids);

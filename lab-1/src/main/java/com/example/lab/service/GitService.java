@@ -43,8 +43,7 @@ public class GitService {
     public void saveRepositories(List<Git> repositories) {
         repositories.stream().filter(
             git -> gitsByUserCache.isCached(git.getOwner().getName()))
-            .forEach(git -> {
-                gitsByUserCache.uncache(git.getOwner().getName()); });
+            .forEach(git -> gitsByUserCache.uncache(git.getOwner().getName()));
 
         repository.saveAll(repositories);
     }

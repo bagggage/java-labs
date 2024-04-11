@@ -13,7 +13,6 @@ import com.example.lab.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -44,13 +43,11 @@ public class UserService {
             return new ArrayList<>();
         }
 
-        List<User> result = ids.stream()
+        return ids.stream()
             .map(id -> {
                 return repository.findById(id).orElse(null);
             })
-            .collect(Collectors.toList());
-
-        return result;
+            .toList();
     }
 
     public Optional<User> findUserByUsername(String username) {
