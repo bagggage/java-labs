@@ -140,6 +140,7 @@ class GitServiceTest {
         contributor.setContributing(new ArrayList());
     
         Git git = new Git();
+        git.setId(5L);
         git.setOwner(owner);
         owner.setOwnedRepositories(List.of(git));
 
@@ -151,5 +152,11 @@ class GitServiceTest {
         assertNotNull(result);
         assertTrue(result.getContributing().contains(git));
         verify(userRepository, times(1)).save(contributor);
+
+        assertNull(gitService.addContributorByRepositoryName(repositoryName, ownerUsername, contributorUsername));
+
+        when(userRepository.findByUsername(contributorUsername)).thenReturn(Optional.empty());
+
+        assertNull(gitService.addContributorByRepositoryName(repositoryName, ownerUsername, contributorUsername));
     }
 }
