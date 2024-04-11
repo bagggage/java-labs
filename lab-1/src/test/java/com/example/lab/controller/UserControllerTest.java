@@ -11,6 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,6 +48,53 @@ class UserControllerTest {
         when(userService.findUserById(userId)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> userController.getUserById(userId));
+    }
+
+    @Test
+    public void testGetUsersByIds_EmptyList() {
+        List<Long> ids = new ArrayList<>();
+
+        List<UserDto> result = userController.getUsersByIds(ids);
+
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void testGetUsersByIds_AllFound() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        User user1 = new User();
+        user1.setId(1L);
+        User user2 = new User();
+        user2.setId(2L);
+        User user3 = new User();
+        user3.setId(3L);
+
+        when(userService.findUsersByIdsBulk(ids)).thenReturn(Arrays.asList(user1, user2, user3));
+
+        List<UserDto> result = userController.getUsersByIds(ids);
+
+        assertEquals(3, result.size());
+        assertEquals(user1.getId(), result.get(0).getId());
+        assertEquals(user2.getId(), result.get(1).getId());
+        assertEquals(user3.getId(), result.get(2).getId());
+    }
+
+    @Test
+    void testGetUsersByIds_SomeNotFound() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        User user1 = new User();
+        user1.setId(1L);
+        User user3 = new User();
+        user3.setId(3L);
+
+        when(userService.findUsersByIdsBulk(ids)).thenReturn(Arrays.asList(user1, null, user3));
+
+        List<UserDto> result = userController.getUsersByIds(ids);
+
+        assertEquals(3, result.size());
+        assertEquals(user1.getId(), result.get(0).getId());
+        assertEquals(null, result.get(1));
+        assertEquals(user3.getId(), result.get(2).getId());
     }
 
     @Test

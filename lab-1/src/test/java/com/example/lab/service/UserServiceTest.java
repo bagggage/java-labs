@@ -9,6 +9,7 @@ import com.example.lab.exceptions.UndoneException;
 import com.example.lab.repository.LinkRepository;
 import com.example.lab.repository.UserRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +71,53 @@ class UserServiceTest {
 
         assertTrue(result.isPresent());
         assertEquals(user, result.get());
+    }
+
+    @Test
+    void testFindUsersByIdsBulk_EmptyList() {
+        List<Long> ids = new ArrayList<>();
+
+        List<User> result = userService.findUsersByIdsBulk(ids);
+
+        assertEquals(0, result.size());
+        verify(userRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void testFindUsersByIdsBulk_AllFound() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        User user1 = new User();
+        User user2 = new User();
+        User user3 = new User();
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
+        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
+
+        List<User> result = userService.findUsersByIdsBulk(ids);
+
+        assertEquals(3, result.size());
+        assertEquals(user1, result.get(0));
+        assertEquals(user2, result.get(1));
+        assertEquals(user3, result.get(2));
+    }
+
+    @Test
+    void testFindUsersByIdsBulk_SomeNotFound() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        User user1 = new User();
+        User user3 = new User();
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
+
+        List<User> result = userService.findUsersByIdsBulk(ids);
+
+        assertEquals(3, result.size());
+        assertEquals(user1, result.get(0));
+        assertEquals(null, result.get(1));
+        assertEquals(user3, result.get(2));
     }
 
     @Test
