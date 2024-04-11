@@ -56,9 +56,11 @@ public class LoggingAspect {
         Logger logger = getClassLogger(joinPoint.getTarget().getClass());
         Object[] args = joinPoint.getArgs();
 
+        String argsString = argsToString(args);
+
         logger.info("Request on {}({})",
                     joinPoint.getSignature().getName(),
-                    argsToString(args)
+                    argsString
         );
     }
 
