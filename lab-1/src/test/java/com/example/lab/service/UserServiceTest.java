@@ -39,7 +39,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void testFindUserById() {
+    void testFindUserById() {
         Long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -59,7 +59,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testFindUserByUsername() {
+    void testFindUserByUsername() {
         String username = "testUser";
         User user = new User();
         user.setUsername(username);
@@ -73,7 +73,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAddUser() {
+    void testAddUser() {
         User newUser = new User();
         newUser.setUsername("testUser");
 
@@ -88,7 +88,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUser() {
+    void testUpdateUser() {
         String username = "testUser";
         User user = new User();
         user.setUsername(username);
@@ -116,7 +116,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testRemoveUserByUsername() {
+    void testRemoveUserByUsername() {
         String username = "testUser";
         User user = new User();
         user.setOwnedRepositories(Collections.emptyList());
@@ -150,7 +150,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLinkUser() {
+    void testLinkUser() {
         String username = "testUsername";
         User user = new User();
         user.setUsername(username);

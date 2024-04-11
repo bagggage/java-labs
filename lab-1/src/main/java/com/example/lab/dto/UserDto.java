@@ -25,15 +25,19 @@ public class UserDto {
         if (includeRepositories) {
             repositories = new ArrayList<>();
 
-            for (Git git : entity.getOwnedRepositories()) {
-                if (Boolean.TRUE.equals(git.getIsPublic())) {
-                    repositories.addLast(new GitDto(git, false));
+            if (entity.getOwnedRepositories() != null) {
+                for (Git git : entity.getOwnedRepositories()) {
+                    if (Boolean.TRUE.equals(git.getIsPublic())) {
+                        repositories.addLast(new GitDto(git, false));
+                    }
                 }
             }
 
-            for (Git git : entity.getContributing()) {
-                if (Boolean.TRUE.equals(git.getIsPublic())) {
-                    repositories.addLast(new GitDto(git, true));
+            if (entity.getContributing() != null) {
+                for (Git git : entity.getContributing()) {
+                    if (Boolean.TRUE.equals(git.getIsPublic())) {
+                        repositories.addLast(new GitDto(git, true));
+                    }
                 }
             }
         }
