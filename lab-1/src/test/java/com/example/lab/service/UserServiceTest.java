@@ -89,10 +89,11 @@ class UserServiceTest {
         User user1 = new User();
         User user2 = new User();
         User user3 = new User();
+        user1.setId(1L);
+        user2.setId(2L);
+        user3.setId(3L);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
-        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
+        when(userRepository.findAllByIds(ids)).thenReturn(Arrays.asList(user1, user2, user3));
 
         List<User> result = userService.findUsersByIdsBulk(ids);
 
@@ -107,10 +108,10 @@ class UserServiceTest {
         List<Long> ids = Arrays.asList(1L, 2L, 3L);
         User user1 = new User();
         User user3 = new User();
+        user1.setId(1L);
+        user3.setId(3L);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
-        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
+        when(userRepository.findAllByIds(ids)).thenReturn(Arrays.asList(user1, user3));
 
         List<User> result = userService.findUsersByIdsBulk(ids);
 

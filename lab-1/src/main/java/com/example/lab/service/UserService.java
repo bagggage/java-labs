@@ -42,12 +42,15 @@ public class UserService {
         if (ids.isEmpty()) {
             return new ArrayList<>();
         }
+        
+        List<User> dbResponse = repository.findAllByIds(ids);
 
-        return ids.stream()
-            .map(id -> {
-                return repository.findById(id).orElse(null);
-            })
-            .toList();
+        return ids.stream().map(id -> 
+                dbResponse.stream()
+                    .filter(user -> user.getId().equals(id))
+                    .findFirst()
+                    .orElse(null)
+            ).toList();
     }
 
     public Optional<User> findUserByUsername(String username) {
