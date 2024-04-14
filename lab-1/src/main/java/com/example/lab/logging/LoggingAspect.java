@@ -1,6 +1,8 @@
 package com.example.lab.logging;
 
 import com.example.lab.exceptions.ApiException;
+import com.example.lab.service.RequestCounterService;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.aspectj.lang.JoinPoint;
@@ -58,9 +60,10 @@ public class LoggingAspect {
 
         String argsString = argsToString(args);
 
-        logger.info("Request on {}({})",
+        logger.info("Request on {}({}): No:{}",
                     joinPoint.getSignature().getName(),
-                    argsString
+                    argsString,
+                    RequestCounterService.getRequestsCount() + 1
         );
     }
 
