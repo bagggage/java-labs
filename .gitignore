@@ -1,1 +1,3 @@
 .vscode
+.PVS-Studio
+*.log
