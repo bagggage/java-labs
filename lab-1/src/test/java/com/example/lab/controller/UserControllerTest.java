@@ -1,5 +1,6 @@
 package com.example.lab.controller;
 
+import com.example.lab.dto.LinkDto;
 import com.example.lab.dto.UserDto;
 import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
@@ -141,7 +142,7 @@ class UserControllerTest {
         when(userService.findUserByUsername(username)).thenReturn(Optional.of(new User()));
         when(userService.linkUser(any(User.class), any(Link.Service.class), anyString())).thenReturn(link);
 
-        Link result = userController.linkWithThirdPartyService(username, thirdPartyService, thirdPartyUsername);
+        LinkDto result = userController.linkWithThirdPartyService(username, thirdPartyService, thirdPartyUsername);
 
         assertNotNull(result);
     }
