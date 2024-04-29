@@ -3,6 +3,8 @@ import apiRequest from "../api";
 import { useEffect, useState } from "react";
 import RepositoryList from "../components/repository-list";
 import PageTemplate from "../components/page-template";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const HEADER = {
   H_MOBILE: 64,
@@ -41,6 +43,9 @@ export default function Home() {
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [linkButtonEnabled, setLinkButtonEnabled] = useState(false);
+  const [isDelModelOpen, setDelModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const onLinkRepos = (event) => {
     if (linkUrl.length === 0) return;
@@ -76,6 +81,15 @@ export default function Home() {
     setLinkButtonEnabled(false);
   };
 
+  const onDeleteProfile = () => {
+    apiRequest("/users/" + user.username, "DELETE").then((response) => {
+      if (!response.ok) return;
+
+      Cookies.remove("authToken", { path: '' });
+      navigate("/login");
+    });
+  };
+
   useEffect(() => {
     if (user.id !== undefined) return;
 
@@ -109,6 +123,11 @@ export default function Home() {
             <Typography variant="subtitle1" sx={{color: 'text.disabled'}}>{user.username}</Typography>
             <Typography variant="subtitle1" sx={{color: 'text.disabled'}}>{user.name}</Typography>
             <Typography variant="subtitle1" sx={{color: 'text.disabled'}}>{user.email}</Typography>
+            <Button color="error" variant="contained"
+              onClick={() => setDelModalOpen(true)}
+            >
+              Delete Profile
+            </Button>
             <Divider/>
           </Stack>
           <Typography variant="h4">Links:</Typography>
@@ -144,6 +163,31 @@ export default function Home() {
                     setLinkButtonEnabled(event.target.value.length > 0);
                   }}/>
                   <Button disabled={!linkButtonEnabled} variant="contained" onClick={onLinkRepos}>Link!</Button>
+                </Stack>
+              </Card>
+            </Modal>
+            <Modal open={isDelModelOpen} onClose={() => setDelModalOpen(false)}>
+              <Card sx={{
+                p: 2,
+                width: "40%",
+                maxWidth: 400,
+                minWidth: 150,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}>
+                <Typography align="center" variant="h4">
+                  Are you sure you want to delete your profile?
+                </Typography>
+                <Divider/>
+                <Stack mt={2} spacing={2} direction="row" justifyContent="space-around">
+                  <Button color="error" onClick={onDeleteProfile}>
+                    Yes, delete
+                  </Button>
+                  <Button onClick={() => setDelModalOpen(false)}>
+                    Cancle
+                  </Button>
                 </Stack>
               </Card>
             </Modal>

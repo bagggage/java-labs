@@ -3,7 +3,6 @@ import Logo from "../logo";
 import { customShadows } from "../theme/custom-shadows";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import apiRequest from "../api";
 import { useState } from "react";
 
 export default function PageTemplate({ children, searchInitQuery }) {
@@ -48,9 +47,7 @@ export default function PageTemplate({ children, searchInitQuery }) {
             }}
             onClick={() => {
               Cookies.remove("authToken", { path: '' });
-              apiRequest("/auth/logout").then(() => {
-                navigate("/login");
-              });
+              navigate("/login");
           }}>
             Log out
           </Button>
