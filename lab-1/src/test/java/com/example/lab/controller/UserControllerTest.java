@@ -139,6 +139,9 @@ class UserControllerTest {
         String thirdPartyUsername = "thirdPartyUser";
         Link link = new Link();
 
+        link.setService(Link.Service.GITHUB);
+        link.setUrl("github.com");
+
         when(userService.findUserByUsername(username)).thenReturn(Optional.of(new User()));
         when(userService.linkUser(any(User.class), any(Link.Service.class), anyString())).thenReturn(link);
 
