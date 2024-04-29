@@ -28,11 +28,6 @@ public class AuthController {
         return true;
     }
 
-    @GetMapping("logout")    
-    public void logout() {
-        service.logout();
-    }
-
     @PostMapping("login")
     public JwtDto login(@RequestBody @Valid LogInDto loginDto) {
         return new JwtDto(service.login(loginDto));

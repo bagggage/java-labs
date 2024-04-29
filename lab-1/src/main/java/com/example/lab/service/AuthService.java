@@ -33,9 +33,6 @@ public class AuthService {
         return string.contains("@");
     }
 
-    public void logout() {
-    }
-
     public String login(LogInDto loginDto) {
         String username =
             isEmail(loginDto.getLogin()) == false ?
