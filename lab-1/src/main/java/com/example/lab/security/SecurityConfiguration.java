@@ -1,4 +1,4 @@
-package com.example.lab.secutiry;
+package com.example.lab.security;
 
 import java.util.List;
 
