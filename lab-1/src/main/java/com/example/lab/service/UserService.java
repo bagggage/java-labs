@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,6 +56,15 @@ public class UserService {
 
     public Optional<User> findUserByUsername(String username) {
         return repository.findByUsername(username);
+    }
+
+    private User getByUsername(String username) {
+        return repository.findByUsername(username)
+            .orElseThrow(NotFoundException::new);
+    }
+
+    public UserDetailsService userDetailsService() {
+        return this::getByUsername;
     }
 
     public User addUser(User user) {

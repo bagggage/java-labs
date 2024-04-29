@@ -1,6 +1,7 @@
 package com.example.lab.dto;
 
 import com.example.lab.entity.Git;
+import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class UserDto {
     private String email;
 
     private List<GitDto> repositories;
+    private List<LinkDto> links; 
 
     public UserDto(User entity, boolean includeRepositories) {
         id = entity.getId();
@@ -41,6 +43,14 @@ public class UserDto {
                 if (Boolean.TRUE.equals(git.getIsPublic())) {
                     repositories.addLast(new GitDto(git, true));
                 }
+            }
+        }
+
+        links = new ArrayList<>();
+
+        if (entity.getLinks() != null) {
+            for (Link link : entity.getLinks()) {
+                links.add(new LinkDto(link));
             }
         }
     }

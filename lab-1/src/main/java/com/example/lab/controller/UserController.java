@@ -1,13 +1,13 @@
 package com.example.lab.controller;
 
+import com.example.lab.dto.LinkDto;
 import com.example.lab.dto.UserDto;
 import com.example.lab.entity.Link;
 import com.example.lab.entity.User;
 import com.example.lab.exceptions.NotFoundException;
 import com.example.lab.service.UserService;
-
 import java.util.List;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -35,6 +35,13 @@ public class UserController {
             .orElseThrow(NotFoundException::new),
             true
         );
+    }
+
+    @GetMapping("current")
+    public UserDto getCurrentUser() {
+        return new UserDto(service.findUserByUsername(
+            SecurityContextHolder.getContext().getAuthentication().getName()
+            ).orElseThrow(NotFoundException::new), true);
     }
 
     @GetMapping("/bulk/id")
@@ -66,16 +73,16 @@ public class UserController {
     }
 
     @PostMapping("/{username}/link")
-    public Link linkWithThirdPartyService(@PathVariable String username, 
+    public LinkDto linkWithThirdPartyService(@PathVariable String username, 
                                 @RequestParam(name = "service") String thirdPartyService,
                                 @RequestParam(name = "username") String thirdPartyUsername) {    
         User targetUser = service.findUserByUsername(username).orElseThrow(
             NotFoundException::new
         );
 
-        return service.linkUser(targetUser,
+        return new LinkDto(service.linkUser(targetUser,
             Link.Service.valueOf(thirdPartyService), thirdPartyUsername
-        );
+        ));
     }
 
     @PatchMapping("/{username}")
