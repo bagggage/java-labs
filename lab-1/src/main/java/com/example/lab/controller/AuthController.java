@@ -23,6 +23,9 @@ public class AuthController {
         this.service = service;
     }
 
+    @GetMapping("healthcheck")
+    public void healthCheck() {}
+
     @GetMapping("verify")
     public boolean verify() {
         return true;
