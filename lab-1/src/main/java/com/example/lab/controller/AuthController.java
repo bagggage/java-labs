@@ -24,7 +24,9 @@ public class AuthController {
     }
 
     @GetMapping("healthcheck")
-    public void healthCheck() {}
+    public void healthCheck() {
+        // Health check for hosting service to know that REST-API is active
+    }
 
     @GetMapping("verify")
     public boolean verify() {
