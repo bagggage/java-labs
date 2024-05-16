@@ -4,7 +4,7 @@ services:
     runtime: docker
     region: frankfurt
     plan: free
-    healthCheckPath: /
+    healthCheckPath: /api/auth/healthcheck
     envVars:
       - key: SPRING_DATASOURCE_CONNECTION_STRING
         fromDatabase:
