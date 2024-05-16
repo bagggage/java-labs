@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-export const apiUrl = "http://localhost:8080/api";
+export const apiUrl = "https://java-labs.onrender.com/api";
 
 export default async function apiRequest(url = "", method = "GET", data = null, isAuthorized = true) {
   const response = await fetch(apiUrl + url, {
