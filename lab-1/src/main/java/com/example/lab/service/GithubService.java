@@ -28,6 +28,7 @@ public class GithubService implements ThirdPartyGitService {
         List<GithubRepositoryDto> repositories = webClient
                                 .get()
                                 .uri(USERS_API + '/' + username + REPOS_API)
+                                .header("User-Agent", "Git-Helper-Service")
                                 .retrieve()
                                 .bodyToMono(new 
                                     ParameterizedTypeReference<List<GithubRepositoryDto>>(){}
