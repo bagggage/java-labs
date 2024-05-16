@@ -31,10 +31,11 @@ export default function RepositoryList(props) {
           </Box>
           )
         }
-        <Button href={
-          repo.gitUrl
-        }>
-          Git URL
+        <Button target="_blank" href={
+          "https://" + repo.gitUrl.split("git://")[1]
+        }
+        >
+          Open Git
         </Button>
       </Stack>
       <Divider/>

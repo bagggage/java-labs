@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-export const apiUrl = "http://192.168.1.109:8080/api";
+export const apiUrl = "http://localhost:8080/api";
 
 export default async function apiRequest(url = "", method = "GET", data = null, isAuthorized = true) {
   const response = await fetch(apiUrl + url, {
