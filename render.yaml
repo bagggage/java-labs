@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: java-labs
+    runtime: docker
+    region: frankfurt
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: SPRING_DATASOURCE_CONNECTION_STRING
+        fromDatabase:
+          name: git-service-pstrsql
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: git-service-pstrsql
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: git-service-pstrsql
+          property: password
+      - key: SPRING_DATASOURCE_HOST
+        fromDatabase:
+          name: git-service-pstrsql
+          property: host
+      - key: SPRING_DATASOURCE_PORT
+        fromDatabase:
+          name: git-service-pstrsql
+          property: port
+      - key: SPRING_DATASOURCE_SCHEMA
+        fromDatabase:
+          name: git-service-pstrsql
+          property: database
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${SPRING_DATASOURCE_HOST}:${SPRING_DATASOURCE_PORT}/${SPRING_DATASOURCE_SCHEMA}
+
+databases:
+  - name: git-service-pstrsql
+    region: frankfurt
+    plan: free
